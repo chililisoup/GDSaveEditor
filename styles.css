@@ -1,0 +1,165 @@
+:root {
+    --deletersDisplay: none;
+    --hiddenDisplay: none;
+}
+
+
+body, html {
+    background-color: #0f0f1d;
+    color: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+}
+
+header > div {
+    width: 100%;
+}
+
+header > div > div {
+    padding: 0 50px;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-left: 2px solid #d4a0ff;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    border-right: 2px solid #d4a0ff;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    width: fit-content;
+}
+
+header button {
+    border: 1px solid #d4a0ff;
+    margin: 0 5px;
+}
+
+header button:hover {
+    background-color: #29153a;
+}
+
+header button:active {
+    background-color: #43245e;
+}
+
+#output {
+    margin: 50px;
+    margin-top: 20px;
+    border: 2px solid #d4a0ff;
+    border-radius: 5px;
+    background-color: #3a2557;
+    padding: 10px 0;
+}
+
+label {
+    font-weight: bold;
+}
+
+label, p, a {
+    display: inline-block;
+    padding: 0;
+    margin: 5px;
+}
+
+a {
+    color: #7ab4ff;
+}
+
+a:hover {
+    color: #9ec8ff;
+}
+
+a:active {
+    color: white;
+}
+
+.tiles {
+    display: flex;
+    flex-direction: column;
+}
+
+span {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 0;
+    margin: 2px 15px;
+    border-left: 2px solid #d4a0ff;
+}
+
+input, button, select {
+    border: none;
+    background-color: #180c22;
+    border-radius: 5px;
+    color: white;
+}
+
+#upload {
+    display: block;
+    width: 80%;
+    margin: 50px auto;
+    border: 5px dashed #d4a0ff;
+    background-color: rgba(58, 37, 87, 0.2);
+    border-radius: 15px;
+    text-align: center;
+    padding: 24px 0;
+}
+
+#upload:hover {
+    border-color: white;
+    background-color: rgba(58, 37, 87, 0.6);
+}
+
+.deleter {
+    color: red;
+    font-weight: bold;
+    display: var(--deletersDisplay);
+}
+
+.deleter:hover {
+    color: lightcoral;
+}
+
+.opener {
+    color: lightblue;
+    font-weight: bold;
+}
+
+.opener:hover {
+    color: azure;
+}
+
+.deleter:active, .opener:active {
+    color: white;
+}
+
+.hidden {
+    display: var(--hiddenDisplay);
+}

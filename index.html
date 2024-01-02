@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GD Save Editor</title>
+        <link rel="stylesheet" href="styles.css" />
+
+        <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+
+        <script src="util/encryption.js"></script>
+        <script src="util/format.js"></script>
+        <script src="util/keys.js"></script>
+        <script src="util/xml.js"></script>
+
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <input id="upload" type="file" />
+        <header>
+            <div class="right">
+                <div class="center">
+                    <div class="horizontal">
+                        <button id="downloadXML">Download XML</button>
+                        <button id="downloadSave">Download Save</button>
+                    </div>
+                    <div class="horizontal">
+                        <label for="deletersDisplay">Deleters <input id="deletersDisplay" type="checkbox"></label>
+                        <label for="hiddenDisplay">Show Hidden <input id="hiddenDisplay" type="checkbox"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="left">
+                <div class="center">
+                    <h2>GD Save Editor</h2>
+                    <p>Made by chililisoup <small>(with help from community documentation) <small>(thanks colon)</small></small></p>
+                    <div class="horizontal">
+                        <span><a target="_blank" href="https://github.com/chililisoup/GDSaveEditor">Source</a></span>
+                        <span><a target="_blank" href="https://www.youtube.com/@chililigd">YouTube</a></span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="output">
+            <h3 class="center">Upload a Geometry Dash save file above (.dat, .xml)</h3>
+            <p class="center">For encrypted saves, only Windows files are currently supported.</p>
+        </div>
+    </body>
+</html>
