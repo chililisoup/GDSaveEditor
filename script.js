@@ -182,10 +182,10 @@ const displayData = (data, mutableData, name) => {
 }
 
 
-const loadSave = (e, extension) => {
+const loadSave = e => {
     let decryptedData = e.target.result
 
-    if (extension == "dat")
+    if (!decryptedData.startsWith('<?xml '))
         decryptedData = decompressData(
             staticXOR(decryptedData, 11))
     
@@ -208,7 +208,7 @@ const upload = e => {
     dirtyData = []
     dirtyDataCleaners = []
 
-    reader.onload = e => loadSave(e, file.name.split('.').pop())
+    reader.onload = loadSave
     reader.readAsText(file)
 }
 
