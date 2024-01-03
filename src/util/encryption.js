@@ -2,7 +2,7 @@ const staticXOR = (data, key) => {
     let result = data.split('').map(
         char => String.fromCodePoint(
             char.charCodeAt() ^ key))
-    result.splice(- result.length % 4) // remove garbage data (https://github.com/gd-programming/gd.docs/pull/107#issuecomment-1380542961)
+    if (result.length % 4 != 0) result.splice(- result.length % 4) // remove garbage data (https://github.com/gd-programming/gd.docs/pull/107#issuecomment-1380542961)
     return result.join('')
 }
 
