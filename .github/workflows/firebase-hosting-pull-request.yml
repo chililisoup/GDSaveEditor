@@ -12,5 +12,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CHILILISOUP_DEV }}'
-          projectId: chililisoup-dev
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GD_SAVE_EDITOR }}'
+          projectId: gd-save-editor
