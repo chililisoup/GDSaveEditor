@@ -48,17 +48,6 @@ const createExtra = (val, enforce, trueKey, mutableData, extra) => {
 }
 
 
-const formatGeneric = (data, mutableData, name) => {
-    if (data['kCEK']) return parseSpecial(mutableData, dirtyData, dirtyDataCleaners)
-    if (name == 'stats') return formatData(data, statKeys)
-    if (name == 'header') return formatData(data, levelHeaderKeys)
-    if (name == 'colors') return formatData(data, levelColorIds)
-    if (name == 'levelData') return formatData(data, { 0: 'header' })
-    if (data['_websiteExtra_'] && data['_websiteExtra_']['dict']) return formatData(data, data['_websiteExtra_']['dict'])
-    return formatData(data, keys)
-}
-
-
 const displayValue = (body, val, key, trueKey, mutableData, extra) => {
     if (typeof(val) == "object") {
         let button = document.createElement('button')
@@ -70,7 +59,9 @@ const displayValue = (body, val, key, trueKey, mutableData, extra) => {
 
         button.onclick = () => {
             if (!content) {
-                content = displayData(val, mutableData[trueKey], key)
+                content = trueKey ?
+                    displayData(val, mutableData[trueKey], key) :
+                    displayData(val, mutableData, key, true)
                 body.appendChild(content)
             }
 
@@ -118,46 +109,43 @@ const displayValue = (body, val, key, trueKey, mutableData, extra) => {
         case 'boolean':
             return createCheckbox(val, Boolean, trueKey, mutableData)
         default:
-            return Text(val)
+            return new Text(val)
     }
 }
 
 
-const displayData = (data, mutableData, name) => {
-    let div = document.createElement('div')
-    div.classList = ['tiles']
+const displayDataEntry = (key, formattedData, mutableData) => {
+    if (key == 'gdSaveEditor$extra') return
 
-    let formattedData = formatGeneric(data, mutableData, name)
-    let dataKeys = Object.keys(formattedData).sort()
+    const result = formattedData[key]
+    let val = result[0]
+    let trueKey = result[1]
+    let extra = result[2]
 
-    for (let i = 0; i < dataKeys.length; i++) {
-        let key = dataKeys[i]
-        if (key == '_websiteExtra_') continue
+    const span = document.createElement('span')
+    const head = document.createElement('div')
+    const body = document.createElement('div')
+    const label = document.createElement('label')
+    const p = document.createElement('p')
 
-        let val = formattedData[key][0]
-        let trueKey = formattedData[key][1]
+    head.appendChild(label)
+    head.appendChild(p)
+    span.appendChild(head)
+    span.appendChild(body)
 
-        let span = document.createElement('span')
-        let head = document.createElement('div')
-        let body = document.createElement('div')
-        let label = document.createElement('label')
-        let p = document.createElement('p')
+    if (["_isArr", "binaryVersion", "dataType", "levelType"].includes(key)) span.classList = ['hidden']
+    
+    body.style.display = 'none'
 
-        
-        if (["_isArr", "binaryVersion", "dataType", "levelType"].includes(key)) span.classList = ['hidden']
-
-        body.style.display = 'none'
-
-        if (!val) label.innerHTML = key
-        else if ([4n, 10n, 12n].includes(val['kCEK']) && (val['k2'] || val['2']))
-            label.innerHTML = val[val['k2'] ? 'k2' : '2']
-        else label.innerHTML = key
-
-        let deleter = document.createElement('button')
+    if (result.gdSaveEditor$group) {
+        key = result.gdSaveEditor$name
+        val = result.gdSaveEditor$data
+    } else {
+        const deleter = document.createElement('button')
         deleter.innerHTML = 'X'
         deleter.classList = ['deleter']
         deleter.onclick = () => {
-            let dirty = dirtyData.indexOf(mutableData[trueKey])
+            const dirty = dirtyData.indexOf(mutableData[trueKey])
             if (dirty != -1) {
                 dirtyDataCleaners.splice(dirty, 1)
                 dirtyData.splice(dirty, 1)
@@ -167,16 +155,31 @@ const displayData = (data, mutableData, name) => {
             span.remove()
         }
 
-        p.appendChild(
-            displayValue(body, val, key, trueKey, mutableData, formattedData[key][2]))
-
         head.appendChild(deleter)
-        head.appendChild(label)
-        head.appendChild(p)
-        span.appendChild(head)
-        span.appendChild(body)
-        div.appendChild(span)
     }
+
+    if (!val) label.innerHTML = key
+    else if ([4n, 10n, 12n].includes(val['kCEK']) && (val['k2'] || val['2']))
+        label.innerHTML = val[val['k2'] ? 'k2' : '2']
+    else label.innerHTML = key
+    
+    p.appendChild(displayValue(body, val, key, trueKey, mutableData, extra))
+    return span
+}
+
+
+const displayData = (data, mutableData, name, isFormatted) => {
+    const div = document.createElement('div')
+    div.classList = ['tiles']
+
+    const formattedData = isFormatted ? data : formatGeneric(data, mutableData, name)
+    const dataKeys = Object.keys(formattedData).sort()
+
+    dataKeys.forEach(key => {
+        const result = displayDataEntry(key, formattedData, mutableData)
+        if (!result) return
+        div.appendChild(result)
+    })
 
     return div
 }

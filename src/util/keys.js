@@ -1,10 +1,70 @@
 //very much not stolen from colon https://gdcolon.com/gdsave/keys.js
 
-const orbAmounts = [0, 0, 50, 75, 125, 175, 225, 275, 350, 425, 500]
+const bool = [false, true]
+const chestTypes = {
+    1: 'small',
+    2: 'large',
+    3: '1key',
+    4: '5key',
+    5: '10key',
+    6: '25key',
+    7: '50key',
+    8: '100key'
+}
+const chestRewardTypes = {
+    1: 'Fire Shard',
+    2: 'Ice Shard',
+    3: 'Poison Shard',
+    4: 'Shadow Shard',
+    5: 'Lava Shard',
+    6: 'Demon Key',
+    7: 'Mana Orbs',
+    8: 'Diamonds',
+    9: 'Unique Item',
+    10: 'Earth Shard',
+    11: 'Blood Shard',
+    12: 'Metal Shard',
+    13: 'Light Shard',
+    14: 'Soul Shard',
+    15: 'Gold Key'
+}
+const chestUniqueItemRewardTypes = {
+    1: 'cube',
+    2: 'color1',
+    3: 'color2',
+    4: 'ship',
+    5: 'ball',
+    6: 'ufo',
+    7: 'wave',
+    8: 'robot',
+    9: 'spider',
+    10: 'trail',
+    11: 'deathEffect',
+    12: 'item',
+    13: 'swing',
+    14: 'jetpack',
+    15: 'shipFire'
+}
+const questRewardTypes = { 1: 'orbs', 2: 'coins', 3: 'stars' }
+const levelTypes = { 1: 'official', 2: 'local', 3: 'saved', 4: 'online' }
+const levelLengths = ['Tiny', 'Short', 'Medium', 'Long', 'XL', 'Platformer']
+const levelSpeeds = ['1x', '0.5x', '2x', '3x', '4x']
 const demonTypes = ['Unknown', 'Hard', 'Unknown', 'Easy', 'Medium', 'Insane', 'Extreme']
-const starDifficulties = ['Unrated', 'Auto', 'Easy', 'Normal', 'Hard', 'Hard', 'Harder', 'Harder', 'Insane', 'Insane', 'Demon'] 
-const ratingColors = {'Official': 'cyan', 'Epic': '#ff8000', 'Featured': 'yellow', 'Starred': '#ffffbb', 'Rated': '#ffffbb', 'Unrated': 'white', 'Unavailable': 'gray'}
-const typeColors = {'Daily': '#ff8000', 'Weekly': '#da0000', 'Gauntlet': 'salmon', 'Official': 'cyan', 'Online': 'lime'}
+const extraRatingTypes = ['None', 'Epic', 'Legendary', 'Mythic']
+const gamemodes = ['Cube', 'Ship', 'Ball', 'UFO', 'Wave', 'Robot', 'Spider', 'Swing', 'Jetpack']
+const difficulties = {
+    '-1': 'Unrated',
+    '0': 'Auto',
+    '1': 'Easy',
+    '2': 'Normal',
+    '3': 'Hard',
+    '4': 'Harder',
+    '5': 'Insane',
+    '6': 'Demon'
+}
+const playerBasedLevelColor = {'-1': 'none', '1': 'primary', '2': 'secondary'}
+const oldPlayerBasedLevelColor = ['none', 'primary', 'secondary']
+
 
 
 const keys = {
@@ -16,7 +76,7 @@ const keys = {
     'GS_5': 'mapPackStars',
     'GS_6': 'shopPurchases',
     'GS_7': 'levelProgress',
-
+    'GS_8': 'unused',
     'GS_9': 'levelStars',
     'GS_10': 'officialLevelProgress',
     'GS_11': 'dailyRewards',
@@ -34,8 +94,12 @@ const keys = {
     'GS_23': 'gauntletProgress2',
     'GS_24': 'dailyProgress2',
     'GS_25': 'weeklyRewards',
-
+    'GS_26': 'activePath',
     'GS_27': 'completedLists',
+    'GS_28': 'enabledItems',
+    'GS_29': 'pathPricingFix',
+    'GS_30': 'wraithRewards',
+    'GS_31': 'eventRewards',
 
     'GLM_01': 'officialLevels',
     'GLM_02': 'uploadedLevels',
@@ -57,12 +121,15 @@ const keys = {
     'GLM_18': 'levelFolders',
     'GLM_19': 'createdLevelFolders',
     'GLM_20': 'smartTemplates',
+    'GLM_21': 'savedListsOld',
+    'GLM_22': 'savedLists',
+    'GLM_23': 'eventID',
 
     'GJA_001': 'username',
     'GJA_002': 'password',
     'GJA_003': 'accountID',
     'GJA_004': 'sessionID',
-    'GJA_005': 'newPassword',
+    'GJA_005': 'encryptedPassword',
 
     'LLM_01': 'localLevels',
     'LLM_02': 'binaryVersion',
@@ -70,6 +137,7 @@ const keys = {
 
     'MDLM_001': 'songInfo',
     'MDLM_002': 'songPriority',
+    'MDLM_003': 'unknownDict',
 
     'KBM_001': 'keybinds',
     'KBM_002': 'keybinds2',
@@ -86,6 +154,7 @@ const keys = {
 
 const kcekKeys = {
     4: 'level',
+    
     6: 'song',
     7: 'quest',
     8: 'reward',
@@ -137,12 +206,14 @@ const statKeys = {
     38: 'lightPath',
     39: 'soulPath',
     40: 'gauntlets',
-    41: 'listRewards'
+    41: 'listRewards',
+    42: 'insaneLevels',
+    43: 'goldKeys'
 }
 
 
 const questKeys = {
-    1: { name: 'itemType', arr: { 1: 'orbs', 2: 'coins', 3: 'stars' } },
+    1: { name: 'itemType', arr: questRewardTypes },
     2: 'obtainedItems',
     3: 'requiredItems',
     4: 'diamonds',
@@ -169,26 +240,16 @@ const songKeys = {
 
 const chestKeys = {
     1: 'id',
-    2: { name: 'chest', arr: { 1: 'small', 2: 'large', 3: '1key', 4: '5key', 5: '10key', 6: '25key', 7: '50key', 8: '100key' } },
+    2: { name: 'chest', arr: chestTypes },
     3: 'rewards'
 }
 
 
 const rewardKeys = {
-    1: { name: 'item', arr: { 1: 'Fire Shard', 2: 'Ice Shard', 3: 'Poison Shard', 4: 'Shadow Shard', 5: 'Lava Shard', 6: 'Demon Key', 7: 'Mana Orbs', 8: 'Diamonds', 9: 'Icon', 10: 'Earth Shard', 11: 'Blood Shard', 12: 'Metal Shard', 13: 'Light Shard', 14: 'Soul Shard' } },
-    2: 'iconID',
+    1: { name: 'item', arr: chestRewardTypes },
+    2: 'itemID',
     3: 'amount',
-    4: { name: 'iconForm', arr: { 1: 'cube', 2: 'color1', 3: 'color2', 4: 'ship', 5: 'ball', 6: 'ufo', 7: 'wave', 8: 'robot', 9: 'spider', 10: 'trail', 11: 'deathEffect' } }
-}
-
-
-const listKeys = {
-    'k2': 'name',
-
-    'k5': 'author',
-
-    'k96': 'orderedLevelIds',
-    'k97': 'levels'
+    4: { name: 'itemValue', arr: chestUniqueItemRewardTypes }
 }
 
 
@@ -199,7 +260,7 @@ const levelKeys = {
     'k4': 'levelData',
     'k5': 'author',
     'k6': 'playerID',
-    'k7': { name: 'difficulty', arr: { 1: 'Easy', 2: 'Normal', 3: 'Hard', 4: 'Harder', 5: 'Insane', 6: 'Demon' } },
+    'k7': { name: 'difficulty', arr: difficulties },
     'k8': 'officialSongID',
     'k9': 'ratingScore1',
     'k10': 'ratingScore2',
@@ -213,9 +274,9 @@ const levelKeys = {
     'k18': 'attempts',
     'k19': 'percentage',
     'k20': 'practicePercentage',
-    'k21': { name: 'levelType', arr: { 1: 'official', 2: 'local', 3: 'saved', 4: 'online' } },
+    'k21': { name: 'levelType', arr: levelTypes },
     'k22': 'likes',
-    'k23': { name: 'length', arr: ['Tiny', 'Short', 'Medium', 'Long', 'XL', 'Platformer'] },
+    'k23': { name: 'length', arr: levelLengths },
     'k24': 'dislikes',
     'k25': 'demon',
     'k26': 'stars',
@@ -227,7 +288,8 @@ const levelKeys = {
     'k36': 'jumps',
     'k37': 'secretCoinsToUnlock',
     'k38': 'levelUnlocked',
-    
+    'k39': 'roughLevelSize',
+    'k40': 'gameVersion',
     'k41': 'password',
     'k42': 'copiedID',
     'k43': 'twoPlayer',
@@ -251,18 +313,18 @@ const levelKeys = {
     'k69': 'large',
     
     'k71': 'manaOrbPercentage',
-    'k72': 'ldm',
-    'k73': 'ldmEnabled',
+    'k72': 'hasLDM',
+    'k73': 'enableLDM',
     'k74': 'timelyID',
-    'k75': 'epic',
-    'k76': 'demonType',
+    'k75': { name: 'epic', arr: extraRatingTypes },
+    'k76': { name: 'demonType', arr: demonTypes },
     'k77': 'isGauntlet',
-    'k78': 'isGauntlet2',
+    'k78': 'isAltGame',
     'k79': 'unlisted',
     'k80': 'editorTime',
     'k81': 'totalEditorTime',
     'k82': 'favorited',
-    'k83': 'savedLevelIndex',
+    'k83': 'orderIndex',
     'k84': 'folder',
     'k85': 'clicks',
     'k86': 'bestAttemptTime',
@@ -271,10 +333,26 @@ const levelKeys = {
     'k89': 'leaderboardValid',
     'k90': 'leaderboardPercentage',
     
+    'k94': 'friendsOnly',
     'k95': 'lengthInFrames',
+    'k96': 'orderedLevelIds',
+    'k97': 'levels',
+    'k98': 'uploadTimestamp',
+    'k99': 'updateTimestamp',
 
-    'k102': 'bugPosX',
-    'k103': 'bugPosYMaybe',
+    'k102': 'previewLockX',
+    'k103': 'previewLockY',
+    'k104': 'usedSongs',
+    'k105': 'usedSFX',
+
+    'k107': 'bestTime',
+    'k108': 'bestPoints',
+    'k109': 'localTimes',
+    'k110': 'localScores',
+    'k111': 'platformerLeaderboardSeed',
+    'k112': 'disableShake',
+    'k113': 'diamondReward',
+    'k114': 'requiredLevels',
 
     'kI1': 'editorCameraX',
     'kI2': 'editorCameraY',
@@ -305,67 +383,71 @@ const levelColorIds = {
 
 
 const levelColorKeys = {
-    1: 'r',
-    2: 'g',
-    3: 'b',
-    4: { name: 'playerColor', arr: { '-1': 'none', '0': 'none', '1': 'primary', '2': 'secondary' } },
+    1: 'fromRed',
+    2: 'fromGreen',
+    3: 'fromBlue',
+    4: { name: 'playerColor', arr: playerBasedLevelColor },
     5: 'blending',
     6: 'id',
-    7: 'opacity',
-
+    7: 'fromOpacity',
+    8: 'toggleOpacity',
     9: 'copyChannelId',
     10: 'colorHSV',
-    11: 'r2',
-    12: 'g2',
-    13: 'b2',
-
+    11: 'toRed',
+    12: 'toGreen',
+    13: 'toBlue',
+    14: 'deltaTime',
+    15: 'toOpacity',
+    16: 'duration',
     17: 'copyOpacity'
 }
 
 
 const levelHeaderKeys = {
     'kA1': 'audioTrack',
-    'kA2': { name: 'gamemode', arr: ['cube', 'ship', 'ball', 'ufo', 'wave', 'robot', 'spider', 'swing'] },
-    'kA3': { name: 'miniMode', arr: [false, true] },
-    'kA4': { name: 'speed', arr: ['1x', '0.5x', '2x', '3x', '4x'] },
-
+    'kA2': { name: 'gamemode', arr: gamemodes },
+    'kA3': { name: 'miniMode', arr: bool },
+    'kA4': { name: 'speed', arr: levelSpeeds },
+    'kA5': { name: 'oldObj2Blending', arr: bool },
     'kA6': { name: 'background', enforce: BigInt },
     'kA7': { name: 'ground', enforce: BigInt },
-    'kA8': { name: 'dualMode', arr: [false, true] },
-    'kA9': { name: 'useStartPos', arr: [false, true] },
-    'kA10': { name: 'twoPlayerMode', arr: [false, true] },
-    'kA11': { name: 'flippedGravity', arr: [false, true] },
-
+    'kA8': { name: 'dualMode', arr: bool },
+    'kA9': { name: 'useStartPos', arr: bool },
+    'kA10': { name: 'twoPlayerMode', arr: bool },
+    'kA11': { name: 'flippedGravity', arr: bool },
+    'kA12': { name: 'unusedColor3Blending', arr: bool },
     'kA13': { name: 'musicOffset', enforce: Number },
     'kA14': 'guidelines',
-    'kA15': { name: 'fadeIn', arr: [false, true] },
-    'kA16': { name: 'fadeOut', arr: [false, true] },
+    'kA15': { name: 'fadeIn', arr: bool },
+    'kA16': { name: 'fadeOut', arr: bool },
     'kA17': { name: 'groundLine', enforce: BigInt },
     'kA18': { name: 'font', enforce: BigInt },
-
-    'kA20': { name: 'reverseGameplay', arr: [false, true] },
-
-    'kA22': { name: 'isPlatformer', arr: [false, true] },
+    'kA19': { name: 'startPosTargetOrder', enforce: BigInt },
+    'kA20': { name: 'reverseGameplay', arr: bool },
+    'kA19': { name: 'startPosDisabled', arr: bool },
+    'kA22': { name: 'isPlatformer', arr: bool },
 
     'kA25': { name: 'middleground', enforce: BigInt },
+    'kA26': { name: 'startPosTargetChannel', enforce: BigInt },
+    'kA27': { name: 'multiRotation', arr: bool },
+    'kA28': { name: 'mirrorMode', arr: bool },
+    'kA29': { name: 'rotateGameplay', arr: bool },
 
-    'kA27': { name: 'multiRotation', arr: [false, true] },
-    'kA28': { name: 'mirrorMode', arr: [false, true] },
-    'kA29': { name: 'rotateGameplay', arr: [false, true] },
-
-    'kA31': { name: 'playerSqueeze', arr: [false, true] },
-    'kA32': { name: 'fixGravity', arr: [false, true] },
-    'kA33': { name: 'fixScale', arr: [false, true] },
-    'kA34': { name: 'fixRobot', arr: [false, true] },
-
+    'kA31': { name: 'playerSqueeze', arr: bool },
+    'kA32': { name: 'fixGravity', arr: bool },
+    'kA33': { name: 'fixScale', arr: bool },
+    'kA34': { name: 'fixRobot', arr: bool },
+    'kA35': { name: 'startPosResetCamera', arr: bool },
     'kA36': { name: 'spawnGroup', enforce: BigInt },
-    'kA37': { name: 'dynamicHeight', arr: [false, true] },
-    'kA38': { name: 'sortGroups', arr: [false, true] },
-    'kA39': { name: 'fixRadiusCollision', arr: [false, true] },
-    'kA40': { name: 'modernChanges', arr: [false, true] },
-    'kA41': { name: 'staticRotate', arr: [false, true] },
-    'kA42': { name: 'reverseSync', arr: [false, true] },
-    'kA43': { name: 'noTimePenalty', arr: [false, true] },
+    'kA37': { name: 'dynamicHeight', arr: bool },
+    'kA38': { name: 'sortGroups', arr: bool },
+    'kA39': { name: 'fixRadiusCollision', arr: bool },
+    'kA40': { name: 'modernChanges', arr: bool },
+    'kA41': { name: 'staticRotate', arr: bool },
+    'kA42': { name: 'reverseSync', arr: bool },
+    'kA43': { name: 'noTimePenalty', arr: bool },
+
+    'kA45': { name: 'decreaseBoostSlide', arr: bool },
 
     'kS1' : 'oldBgColR',
     'kS2' : 'oldBgColG',
@@ -382,11 +464,11 @@ const levelHeaderKeys = {
     'kS13' : 'oldObj2ColR',
     'kS14' : 'oldObj2ColG',
     'kS15' : 'oldObj2ColB',
-    'kS16' : { name: 'oldBgPlayerCol', arr: ['none', 'primary', 'secondary'] },
-    'kS17' : { name: 'oldGroundPlayerCol', arr: ['none', 'primary', 'secondary'] },
-    'kS18' : { name: 'oldLinePlayerCol', arr: ['none', 'primary', 'secondary'] },
-    'kS19' : { name: 'oldObjPlayerCol', arr: ['none', 'primary', 'secondary'] },
-    'kS20' : { name: 'oldObj2PlayerCol', arr: ['none', 'primary', 'secondary'] },
+    'kS16' : { name: 'oldBgPlayerCol', arr: oldPlayerBasedLevelColor },
+    'kS17' : { name: 'oldGroundPlayerCol', arr: oldPlayerBasedLevelColor },
+    'kS18' : { name: 'oldLinePlayerCol', arr: oldPlayerBasedLevelColor },
+    'kS19' : { name: 'oldObjPlayerCol', arr: oldPlayerBasedLevelColor },
+    'kS20' : { name: 'oldObj2PlayerCol', arr: oldPlayerBasedLevelColor },
 
     'kS29': 'oldBgColor',
     'kS30': 'oldGroundColor',
@@ -460,7 +542,7 @@ const gameVariables = {
     '0045': 'editor.debugDraw',
     '0046': 'editor.hideUIOnTest',
     '0047': 'showedProfileText',
-
+    '0048': 'viewedOwnProfile',
     '0049': 'editor.columns',
     '0050': 'editor.rows',
     '0051': 'showedNGMessage',
@@ -482,7 +564,7 @@ const gameVariables = {
     '0068': 'quickCheckpointMode',
     '0069': 'commentMode',
     '0070': 'showedUnlistedLevelMessage',
-
+    '0071': 'hidePracticeButtons',
     '0072': 'disableGravityEffect',
     '0073': 'newCompletedFilter',
     '0074': 'showRestartButton',
@@ -504,53 +586,140 @@ const gameVariables = {
     '0092': 'savedLevelFolder',
     '0093': 'increaseLevelsPerPage',
     '0094': 'moreComments',
-
+    '0095': 'doNot',
     '0096': 'switchWaveTrailColor',
     '0097': 'editor.enableLinkControls',
     '0098': 'levelLeaderboardType',
     '0099': 'showLeaderboardPercent',
     '0100': 'practiceDeathEffect',
     '0101': 'forceSmoothFix',
-    '0102': 'editor.editorSmoothFix'
+    '0102': 'editor.editorSmoothFix',
+    '0103': 'editor.layerLocking',
+    '0104': 'editor.recordOrder',
+    '0105': 'editor.startposPlayback',
+    '0106': 'showMeltdownPromo',
+    '0108': 'autoEnableLowDetail',
+    '0109': 'showLevelInfoLabel',
+    '0110': 'editor.fastPreview',
+
+    '0112': 'editor.increaseScaleLimit',
+    '0113': 'flipPlatformerControls',
+
+    '0115': 'showFPS',
+    '0116': 'useCustomFPS',
+    '0117': 'editor.previewParticles',
+    '0118': 'editor.previewAnimations',
+    '0119': 'dontSaveLevels',
+
+    '0121': 'editor.hideInvisible',
+    '0122': 'disableMenuMusic',
+
+    '0125': 'editor.unlockPracticeMusic',
+    '0126': 'decimalPercentage',
+    '0127': 'saveGauntletLevels',
+    '0128': 'lockCursor',
+    '0129': 'disablePortalLabels',
+    '0130': 'enableOrbLabels',
+    '0131': 'editor.smartTemplateUseNearby',
+    '0132': 'editor.smartTemplateDontDelete',
+    '0133': 'editor.groupIDFilter',
+    '0134': 'hideAttemptsPractice',
+    '0135': 'hideAttempts',
+    '0136': 'extraLDM',
+    '0137': 'editor.hideParticleIcons',
+
+    '0139': 'editor.colorChannelFilter',
+    '0140': 'disableOrbScale',
+    '0141': 'disableTriggerOrbScale',
+    '0142': 'reduceAudioQuality',
+
+    '0144': 'audioVisualizer',
+    '0145': 'showTime',
+    '0146': 'disableCheckpoints',
+    '0147': 'sfxLibrarySearchFolder',
+    '0148': 'sfxLibraryCompactMode',
+    '0149': 'editor.showClicks',
+    '0150': 'editor.autoPause',
+    '0151': 'editor.startOptimization',
+    '0152': 'editor.hidePath',
+    '0153': 'explodeOnDeath',
+
+    '0155': 'disableShaderAntiAliasing',
+    '0156': 'editor.disablePasteStateGroups',
+    '0157': 'sawLevelUploadGuidelines',
+    '0158': 'editor.previewShaders',
+    '0159': 'audioFix01',
+
+    '0163': 'quickKeys',
+    '0164': 'levelLeaderboardMode',
+
+    '0166': 'showHitboxesPractice',
+    '0167': 'confirmExit',
+    '0168': 'fastMenu',
+    '0169': 'editor.smallWarpButtons',
+    '0170': 'borderlessFullscreen',
+    '0171': 'disablePlayerHitbox',
+    '0172': 'disableShakeNew',
+    '0173': 'editor.ignoreDamageTestmode',
+    '0174': 'editor.hidePlaytestText'
 }
 
 
-const gameEvents = {
-    1: 'challengeUnlocked',
-    2: 'glubfubHint1',
-    3: 'glubfubHint2',
-    4: 'challengeCompleted',
-    5: 'treasureRoomUnlocked',
-    6: 'chamberOfTimeUnlocked',
-    7: 'chamberOfTimeDiscovered',
-    8: 'foundMasterEmblem',
-    9: 'gatekeeperDialogue',
-    10: 'scratchDialogue',
-    11: 'scratchShopUnlocked',
-    12: 'monsterDialogue',
-    13: 'monsterFreed',
-    14: 'demonKey1',
-    15: 'demonKey2',
-    16: 'demonKey3',
-    17: 'shopkeeperDialogue',
-    18: 'gdwOnlineUnlocked',
-    19: 'monsterEncountered',
-    20: 'communityShopUnlocked',
-    21: 'potborDialogue',
-    22: 'youtubeChest',
-    23: 'facebookChest',
-    24: 'twitterChest',
-    25: 'explorersUnlocked',
-    26: 'twitchChest',
-    27: 'discordChest',
-    28: 'towerClicked',
-    29: 'towerEntered',
-    30: 'acceptedTOS',
-    31: 'zolgurothEncountered',
-    32: 'redditChest',
-    33: 'towerFloor1Completed',
-    34: 'diamondShopUnlocked',
-    35: 'mechanicUnlocked',
-    36: 'mechanicDialogue',
-    37: 'diamondShopkeeperDialogue'
+const dataKeeperTypes = {
+    'gv': ['gameVariables', gameVariables],
+    'c0': ['primaryColors', {}],
+    'c1': ['secondaryColors', {}],
+    'i': ['unlockedCubes', {}],
+    'ship': ['unlockedShips', {}],
+    'ball': ['unlockedBalls', {}],
+    'bird': ['unlockedUFOs', {}],
+    'dart': ['unlockedWaves', {}],
+    'robot': ['unlockedRobots', {}],
+    'spider': ['unlockedSpiders', {}],
+    'swing': ['unlockedSwings', {}],
+    'jetpack': ['unlockedJetpacks', {}],
+    'special': ['unlockedTrails', {}],
+    'death': ['unlockedDeathEffects', {}]
+}
+
+
+const unlockValueKeeperKeys = {
+    'ugv_1': 'challengeUnlocked',
+    'ugv_2': 'glubfubHint1',
+    'ugv_3': 'glubfubHint2',
+    'ugv_4': 'challengeCompleted',
+    'ugv_5': 'treasureRoomUnlocked',
+    'ugv_6': 'chamberOfTimeUnlocked',
+    'ugv_7': 'chamberOfTimeDiscovered',
+    'ugv_8': 'foundMasterEmblem',
+    'ugv_9': 'gatekeeperDialogue',
+    'ugv_10': 'scratchDialogue',
+    'ugv_11': 'scratchShopUnlocked',
+    'ugv_12': 'monsterDialogue',
+    'ugv_13': 'monsterFreed',
+    'ugv_14': 'demonKey1',
+    'ugv_15': 'demonKey2',
+    'ugv_16': 'demonKey3',
+    'ugv_17': 'shopkeeperDialogue',
+    'ugv_18': 'gdwOnlineUnlocked',
+    'ugv_19': 'monsterEncountered',
+    'ugv_20': 'communityShopUnlocked',
+    'ugv_21': 'potborDialogue',
+    'ugv_22': 'youtubeChest',
+    'ugv_23': 'facebookChest',
+    'ugv_24': 'twitterChest',
+    'ugv_25': 'explorersUnlocked',
+    'ugv_26': 'twitchChest',
+    'ugv_27': 'discordChest',
+    'ugv_28': 'towerClicked',
+    'ugv_29': 'towerEntered',
+    'ugv_30': 'acceptedTOS',
+    'ugv_31': 'zolgurothEncountered',
+    'ugv_32': 'redditChest',
+    'ugv_33': 'towerFloor1Completed',
+    'ugv_34': 'diamondShopUnlocked',
+    'ugv_35': 'mechanicUnlocked',
+    'ugv_36': 'mechanicDialogue',
+    'ugv_37': 'diamondShopkeeperDialogue',
+    'ugv_38': 'wraithDialogue'
 }
