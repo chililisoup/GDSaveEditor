@@ -24,7 +24,7 @@ const escapeList(data) {
 }
 */
 
-const formatGeneric = (data, mutableData, name) => {
+const formatGeneric = (data, mutableData, name, trueKey) => {
     if (data['kCEK']) return formatSpecial(mutableData, dirtyData, dirtyDataCleaners)
     if (name == 'stats') return formatData(data, statKeys)
     if (name == 'header') return formatData(data, levelHeaderKeys)
@@ -32,6 +32,7 @@ const formatGeneric = (data, mutableData, name) => {
     if (name == 'unlockValueKeeper') return formatData(data, unlockValueKeeperKeys)
     if (name == 'valueKeeper') return formatValueKeeper(data)
     if (name == 'levelData') return formatData(data, { 0: 'header' })
+    if (trueKey == 'GS_21') return formatData(data, rewardKeys)
     if (data['gdSaveEditor$extra'] && data['gdSaveEditor$extra']['dict']) return formatData(data, data['gdSaveEditor$extra']['dict'])
     return formatData(data, keys)
 }
@@ -43,7 +44,7 @@ const formatSpecial = (mutableData, dirtyData, dirtyDataCleaners) => {
         case 6n: return formatData(mutableData, songKeys)
         case 7n: return formatData(mutableData, questKeys)
         case 8n: return formatData(mutableData, chestKeys)
-        case 9n: return formatData(mutableData, rewardKeys)
+        case 9n: return formatData(mutableData, chestRewardKeys)
         case 10n: return formatData(mutableData, smartTemplateKeys)
         case 11n: return formatData(mutableData, smartTemplatePatternKeys)
         case 12n: return formatData(mutableData, levelKeys)
@@ -92,7 +93,7 @@ const formatValueKeeper = data => {
     for (const [key, val] of Object.entries(data)) {
         const splitKey = key.split('_')
         const keyType = splitKey[0]
-        const keyName = splitKey[1]
+        let keyName = splitKey[1]
 
         let name
         let dict
@@ -103,6 +104,7 @@ const formatValueKeeper = data => {
         } else {
             name = 'misc'
             dict = {}
+            keyName = key
         }
 
         if (!result[name]) result[name] = {
@@ -122,7 +124,7 @@ const formatValueKeeper = data => {
 
 const formatColor = data => {
     data = combineToDict(data.split('_'))
-    data['gdSaveEditor$extra'] = { dict: levelColorKeys }
+    data.gdSaveEditor$extra = { dict: levelColorKeys }
     return data
 }
 

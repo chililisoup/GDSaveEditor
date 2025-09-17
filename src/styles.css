@@ -121,6 +121,14 @@ input, button, select {
     color: white;
 }
 
+button, input[type=checkbox] {
+    cursor: pointer;
+}
+
+input:not(input[type=checkbox]) {
+    width: min(300px, 40vw);
+}
+
 #upload {
     display: block;
     width: 80%;
@@ -140,6 +148,7 @@ input, button, select {
 .deleter {
     color: red;
     font-weight: bold;
+    width: 20px;
     display: var(--deletersDisplay);
 }
 
@@ -150,6 +159,7 @@ input, button, select {
 .opener {
     color: lightblue;
     font-weight: bold;
+    width: 20px;
 }
 
 .opener:hover {

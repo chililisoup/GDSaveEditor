@@ -49,7 +49,7 @@ const createExtra = (val, enforce, trueKey, mutableData, extra) => {
 
 
 const displayValue = (body, val, key, trueKey, mutableData, extra) => {
-    if (typeof(val) == "object") {
+    if (typeof(val) == 'object') {
         let button = document.createElement('button')
         button.classList = ['opener']
         button.innerHTML = '+'
@@ -60,8 +60,8 @@ const displayValue = (body, val, key, trueKey, mutableData, extra) => {
         button.onclick = () => {
             if (!content) {
                 content = trueKey ?
-                    displayData(val, mutableData[trueKey], key) :
-                    displayData(val, mutableData, key, true)
+                    displayData(val, mutableData[trueKey], key, false, trueKey) :
+                    displayData(val, mutableData, key, true, trueKey)
                 body.appendChild(content)
             }
 
@@ -73,7 +73,7 @@ const displayValue = (body, val, key, trueKey, mutableData, extra) => {
         return button
     }
 
-    if (typeof(extra) == "object") switch(typeof(val)) {
+    if (typeof(extra) == 'object') switch(typeof(val)) {
         case 'string': return createExtra(val, String, trueKey, mutableData, extra)
         case 'number': return createExtra(val, Number, trueKey, mutableData, extra)
         case 'bigint': return createExtra(val, BigInt, trueKey, mutableData, extra)
@@ -133,7 +133,8 @@ const displayDataEntry = (key, formattedData, mutableData) => {
     span.appendChild(head)
     span.appendChild(body)
 
-    if (["_isArr", "binaryVersion", "dataType", "levelType"].includes(key)) span.classList = ['hidden']
+    if (Array.from(key)[0] == '[' || ["_isArr", "binaryVersion", "dataType", "levelType"].includes(key))
+        span.classList = ['hidden']
     
     body.style.display = 'none'
 
@@ -161,18 +162,24 @@ const displayDataEntry = (key, formattedData, mutableData) => {
     if (!val) label.innerHTML = key
     else if ([4n, 10n, 12n].includes(val['kCEK']) && (val['k2'] || val['2']))
         label.innerHTML = val[val['k2'] ? 'k2' : '2']
-    else label.innerHTML = key
+    else if (key == trueKey && typeof(val) == 'object') {
+        const formattedVal = formatGeneric(val, mutableData[trueKey], key, trueKey)
+        if (formattedVal['name']) label.innerHTML = formattedVal['name'][0]
+        else label.innerHTML = key
+    } else label.innerHTML = key
     
     p.appendChild(displayValue(body, val, key, trueKey, mutableData, extra))
     return span
 }
 
 
-const displayData = (data, mutableData, name, isFormatted) => {
+const displayData = (data, mutableData, name, isFormatted, trueKey) => {
+    trueKey ??= name
+
     const div = document.createElement('div')
     div.classList = ['tiles']
 
-    const formattedData = isFormatted ? data : formatGeneric(data, mutableData, name)
+    const formattedData = isFormatted ? data : formatGeneric(data, mutableData, name, trueKey)
     const dataKeys = Object.keys(formattedData).sort()
 
     dataKeys.forEach(key => {
